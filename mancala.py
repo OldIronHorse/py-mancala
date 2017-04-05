@@ -76,12 +76,17 @@ def score(player):
 # select leaf node with highest my_home
 # return move sequence as a list
 # or iterate, store, sort, choose
-def all_moves(mine, yours, prev_moves=[]):
+def all_moves(mine, yours):
   my_cups, my_home = mine
-  for i in range(0, len(my_cups)):
-    if my_cups[i] > 0:
-      new_mine, new_yours, again = move(i, mine, yours)
-
+  result_moves=[]
+  valid_moves = [cup for cup in range(0, 6) if my_cups[cup] > 0]
+  for m in valid_moves:
+    new_mine, new_yours, again=move(m, mine, yours)
+    if again:
+      result_moves+=[[m]+seq for seq in all_moves(new_mine, new_yours)]
+    else:
+      result_moves.append([m])
+  return result_moves
   
 
 def choose_move(mine, yours):
