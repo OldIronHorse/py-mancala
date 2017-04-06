@@ -36,7 +36,6 @@ class TestMove(TestCase):
                      move(2, ((4,4,12,4,4,4),0), new_player))
 
   def test_empty_cup_steal(self):
-    b = [4,4,4,4,4,0,0,4,4,4,4,4,4,0]
     self.assertEqual((((4,0,5,5,5,0),5),((0,4,4,4,4,4),0),False),
                      move(1, ((4,4,4,4,4,0),0),new_player))
 
@@ -64,60 +63,65 @@ class TestToDisplay(TestCase):
 
 class TestAllMoves(TestCase):
   def test_one_valid_move(self):
-    self.assertEqual([[3]], all_moves(((0,0,0,1,0,0),0),
+    self.assertEqual([([3],5)], all_moves(((0,0,0,1,0,0),0),
                                             new_player))
 
   def test_one_scoring_move(self):
-    self.assertEqual([[0],[3],[4]], all_moves(((1,0,0,4,1,0),0),
-                                            ((0,0,0,0,0,1),0)))
+    self.assertEqual([([0],0),
+                      ([3],1),
+                      ([4],0)],
+                     all_moves(((1,0,0,4,1,0),0),
+                               ((0,0,0,0,0,1),0)))
 
   def test_two_scoring_moves(self):
-    self.assertEqual([[0],[3],[5]], all_moves(((1,0,0,4,0,2),0),
-                                            new_player))
+    self.assertEqual([([0],0),
+                      ([3],1),
+                      ([5],1)], 
+                     all_moves(((1,0,0,4,0,2),0), ((1,0,0,0,0,0),0)))
 
   def test_repeating_move(self):
-    self.assertEqual([[0],
-                      [3,0],
-                      [3,4],
-                      [3,5],
-                      [4, 0],
-                      [4, 3, 0],
-                      [4, 3, 4],
-                      [4, 3, 5],
-                      [4, 5],
-                      [5, 0],
-                      [5, 3, 0],
-                      [5, 3, 4],
-                      [5, 3, 5, 0],
-                      [5, 3, 5, 4],
-                      [5, 4, 0],
-                      [5, 4, 3, 0],
-                      [5, 4, 3, 4],
-                      [5, 4, 3, 5],
-                      [5, 4, 5, 0],
-                      [5, 4, 5, 3, 0],
-                      [5, 4, 5, 3, 4],
-                      [5, 4, 5, 3, 5, 0],
-                      [5, 4, 5, 3, 5, 4]],
+    self.assertEqual([([0],0),
+                      ([3,0],1),
+                      ([3,4],2),
+                      ([3,5],2),
+                      ([4, 0],1),
+                      ([4, 3, 0],2),
+                      ([4, 3, 4],2),
+                      ([4, 3, 5],3),
+                      ([4, 5],2),
+                      ([5, 0],1),
+                      ([5, 3, 0],2),
+                      ([5, 3, 4],3),
+                      ([5, 3, 5, 0],3),
+                      ([5, 3, 5, 4],4),
+                      ([5, 4, 0],2),
+                      ([5, 4, 3, 0],3),
+                      ([5, 4, 3, 4],3),
+                      ([5, 4, 3, 5],4),
+                      ([5, 4, 5, 0],3),
+                      ([5, 4, 5, 3, 0],4),
+                      ([5, 4, 5, 3, 4],4),
+                      ([5, 4, 5, 3, 5, 0],5),
+                      ([5, 4, 5, 3, 5, 4],5)],
                      all_moves(((1,0,0,3,2,1),0),
                                           ((0,0,0,0,0,1),0)))
 
 
 class TestChooseMove(TestCase):
   def test_one_valid_move(self):
-    self.assertEqual(3, choose_move(((0,0,0,1,0,0),0),
+    self.assertEqual([3], choose_move(((0,0,0,1,0,0),0),
                                             new_player))
 
   def test_one_scoring_move(self):
-    self.assertEqual(3, choose_move(((1,0,0,4,1,0),0),
+    self.assertEqual([3], choose_move(((1,0,0,4,1,0),0),
                                             ((0,0,0,0,0,1),0)))
 
   def test_two_scoring_moves(self):
-    self.assertEqual(4, choose_move(((1,0,0,4,1,0),0),
+    self.assertEqual([0], choose_move(((1,0,0,4,1,0),0),
                                             new_player))
 
   def test_repeating_move(self):
-    self.assertEqual([5,4,5,3,5],
+    self.assertEqual([5,4,5,3,5,0],
                      choose_move(((1,0,0,3,2,1),0),
                                           ((0,0,0,0,0,1),0)))
 

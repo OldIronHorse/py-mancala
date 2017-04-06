@@ -72,10 +72,6 @@ def score(player):
   cups, home = player
   return sum(cups) + home
 
-#TODO build legal moves tree
-# select leaf node with highest my_home
-# return move sequence as a list
-# or iterate, store, sort, choose
 def all_moves(mine, yours):
   my_cups, my_home = mine
   result_moves=[]
@@ -83,19 +79,25 @@ def all_moves(mine, yours):
   for m in valid_moves:
     new_mine, new_yours, again=move(m, mine, yours)
     if again:
-      result_moves+=[[m]+seq for seq in all_moves(new_mine, new_yours)]
+      result_moves+=[([m]+seq, home) for seq, home in all_moves(new_mine, new_yours)]
     else:
-      result_moves.append([m])
+      result_cups, result_home=new_mine
+      result_moves.append(([m],result_home))
   return result_moves
   
 
 def choose_move(mine, yours):
   """Return the move that maximises my_home after this turn"""
   my_cups, my_home = mine
-  valid_moves = [cup for cup in range(0, 6) if my_cups[cup] > 0]
-  move_results = [(move(cup, (my_cups, my_home), yours)[0][1], cup) 
-                  for cup in valid_moves]
-  return sorted(move_results)[-1][1]
+  move_seqs=all_moves(mine, yours)
+  best_home=-1
+  best_move_seq=None
+  for seq, home  in move_seqs:
+    if home>best_home:
+      best_move_seq=seq
+      best_home=home
+  #TODO tie-break for equal scores?
+  return best_move_seq
 
 if __name__ == '__main__':
   player_one = new_player
