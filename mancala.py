@@ -6,7 +6,8 @@ import itertools
 class NotYourCup(Exception):
   pass
 
-new_player = ((4,4,4,4,4,4),0)
+new_player=((4,4,4,4,4,4),0)
+new_game=(new_player, new_player)
 
 def repeating_moves(cups):
   moves=[]
