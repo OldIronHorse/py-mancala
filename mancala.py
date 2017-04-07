@@ -2,6 +2,7 @@
 
 import operator
 import itertools
+from random import choice
 
 class NotYourCup(Exception):
   pass
@@ -79,7 +80,7 @@ def all_moves(mine, yours):
   valid_moves = [cup for cup in range(0, 6) if my_cups[cup] > 0]
   for m in valid_moves:
     new_mine, new_yours, again=move(m, mine, yours)
-    if again:
+    if again and not is_game_over(new_mine, new_yours):
       result_moves+=[([m]+seq, home) for seq, home in all_moves(new_mine, new_yours)]
     else:
       result_cups, result_home=new_mine
@@ -109,6 +110,10 @@ def choose_move_hoarder(mine, yours):
       best_total=home+sum(cups)
   return best_move_seq
 
+def choose_move_random(mine, yours):
+  '''select a random move sequence'''
+  seq, state=choice(all_moves(mine, yours))
+  return seq
 #TODO alternative move choosers
 # random
 # sniper

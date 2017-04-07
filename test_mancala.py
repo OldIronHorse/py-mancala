@@ -105,6 +105,10 @@ class TestAllMoves(TestCase):
                       ([5,4,5,3,5,4],(((1,0,0,0,0,1),5),((0,0,0,0,0,1),0)))],
                      all_moves(((1,0,0,3,2,1),0),((0,0,0,0,0,1),0)))
 
+  def test_end_game(self):
+    self.assertEqual([([5],(((0,0,0,0,0,0),5),((4,4,4,4,4,4),3)))],
+                     all_moves(((0,0,0,0,0,1),4),((4,4,4,4,4,4),3)))
+
 
 class TestChooseMoveMaxScore(TestCase):
   def test_one_valid_move(self):
