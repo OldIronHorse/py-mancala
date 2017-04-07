@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from mancala import new_player, move, to_display, is_game_over, choose_move, \
-  repeating_moves, all_moves
+from mancala import new_player, move, to_display, is_game_over, \
+  choose_move_max_score, repeating_moves, all_moves, choose_move_hoarder
 from unittest import TestCase, main
 
 class TestMove(TestCase):
@@ -63,67 +63,86 @@ class TestToDisplay(TestCase):
 
 class TestAllMoves(TestCase):
   def test_one_valid_move(self):
-    self.assertEqual([([3],5)], all_moves(((0,0,0,1,0,0),0),
-                                            new_player))
+    self.assertEqual([([3],(((0,0,0,0,0,0),5),((4,0,4,4,4,4),0)))], 
+                     all_moves(((0,0,0,1,0,0),0), new_player))
 
   def test_one_scoring_move(self):
-    self.assertEqual([([0],0),
-                      ([3],1),
-                      ([4],0)],
+    self.assertEqual([([0],(((0,1,0,4,1,0),0),((0,0,0,0,0,1),0))),
+                      ([3],(((1,0,0,0,2,1),1),((1,0,0,0,0,1),0))),
+                      ([4],(((1,0,0,4,0,1),0),((0,0,0,0,0,1),0)))],
                      all_moves(((1,0,0,4,1,0),0),
                                ((0,0,0,0,0,1),0)))
 
   def test_two_scoring_moves(self):
-    self.assertEqual([([0],0),
-                      ([3],1),
-                      ([5],1)], 
+    self.assertEqual([([0],(((0,1,0,4,0,2),0),((1,0,0,0,0,0),0))),
+                      ([3],(((1,0,0,0,1,3),1),((2,0,0,0,0,0),0))),
+                      ([5],(((1,0,0,4,0,0),1),((2,0,0,0,0,0),0)))], 
                      all_moves(((1,0,0,4,0,2),0), ((1,0,0,0,0,0),0)))
 
   def test_repeating_move(self):
-    self.assertEqual([([0],0),
-                      ([3,0],1),
-                      ([3,4],2),
-                      ([3,5],2),
-                      ([4, 0],1),
-                      ([4, 3, 0],2),
-                      ([4, 3, 4],2),
-                      ([4, 3, 5],3),
-                      ([4, 5],2),
-                      ([5, 0],1),
-                      ([5, 3, 0],2),
-                      ([5, 3, 4],3),
-                      ([5, 3, 5, 0],3),
-                      ([5, 3, 5, 4],4),
-                      ([5, 4, 0],2),
-                      ([5, 4, 3, 0],3),
-                      ([5, 4, 3, 4],3),
-                      ([5, 4, 3, 5],4),
-                      ([5, 4, 5, 0],3),
-                      ([5, 4, 5, 3, 0],4),
-                      ([5, 4, 5, 3, 4],4),
-                      ([5, 4, 5, 3, 5, 0],5),
-                      ([5, 4, 5, 3, 5, 4],5)],
-                     all_moves(((1,0,0,3,2,1),0),
-                                          ((0,0,0,0,0,1),0)))
+    self.assertEqual([([0],(((0,1,0,3,2,1),0),((0,0,0,0,0,1),0))),
+                      ([3,0],(((0,1,0,0,3,2),1),((0,0,0,0,0,1),0))),
+                      ([3,4],(((1,0,0,0,0,3),2),((1,0,0,0,0,1),0))),
+                      ([3,5],(((1,0,0,0,3,0),2),((1,0,0,0,0,1),0))),
+                      ([4,0],(((0,1,0,3,0,2),1),((0,0,0,0,0,1),0))),
+                      ([4,3,0],(((0,1,0,0,1,3),2),((0,0,0,0,0,1),0))),
+                      ([4,3,4],(((1,0,0,0,0,4),2),((0,0,0,0,0,1),0))),
+                      ([4,3,5],(((1,0,0,0,1,0),3),((1,1,0,0,0,1),0))),
+                      ([4,5],(((1,0,0,3,0,0),2),((1,0,0,0,0,1),0))),
+                      ([5,0],(((0,1,0,3,2,0),1),((0,0,0,0,0,1),0))),
+                      ([5,3,0],(((0,1,0,0,3,1),2),((0,0,0,0,0,1),0))),
+                      ([5,3,4],(((1,0,0,0,0,2),3),((1,0,0,0,0,1),0))),
+                      ([5,3,5,0],(((0,1,0,0,3,0),3),((0,0,0,0,0,1),0))),
+                      ([5,3,5,4],(((1,0,0,0,0,1),4),((1,0,0,0,0,1),0))),
+                      ([5,4,0],(((0,1,0,3,0,1),2),((0,0,0,0,0,1),0))),
+                      ([5,4,3,0],(((0,1,0,0,1,2),3),((0,0,0,0,0,1),0))),
+                      ([5,4,3,4],(((1,0,0,0,0,3),3),((0,0,0,0,0,1),0))),
+                      ([5,4,3,5],(((1,0,0,0,1,0),4),((1,0,0,0,0,1),0))),
+                      ([5,4,5,0],(((0,1,0,3,0,0),3),((0,0,0,0,0,1),0))),
+                      ([5,4,5,3,0],(((0,1,0,0,1,1),4),((0,0,0,0,0,1),0))),
+                      ([5,4,5,3,4],(((1,0,0,0,0,2),4),((0,0,0,0,0,1),0))),
+                      ([5,4,5,3,5,0],(((0,1,0,0,1,0),5),((0,0,0,0,0,1),0))),
+                      ([5,4,5,3,5,4],(((1,0,0,0,0,1),5),((0,0,0,0,0,1),0)))],
+                     all_moves(((1,0,0,3,2,1),0),((0,0,0,0,0,1),0)))
 
 
-class TestChooseMove(TestCase):
+class TestChooseMoveMaxScore(TestCase):
   def test_one_valid_move(self):
-    self.assertEqual([3], choose_move(((0,0,0,1,0,0),0),
+    self.assertEqual([3], choose_move_max_score(((0,0,0,1,0,0),0),
                                             new_player))
 
   def test_one_scoring_move(self):
-    self.assertEqual([3], choose_move(((1,0,0,4,1,0),0),
+    self.assertEqual([3], choose_move_max_score(((1,0,0,4,1,0),0),
                                             ((0,0,0,0,0,1),0)))
 
   def test_two_scoring_moves(self):
-    self.assertEqual([0], choose_move(((1,0,0,4,1,0),0),
+    self.assertEqual([0], choose_move_max_score(((1,0,0,4,1,0),0),
                                             new_player))
 
   def test_repeating_move(self):
     self.assertEqual([5,4,5,3,5,0],
-                     choose_move(((1,0,0,3,2,1),0),
+                     choose_move_max_score(((1,0,0,3,2,1),0),
                                           ((0,0,0,0,0,1),0)))
+
+
+class TestChooseMoveHoarder(TestCase):
+  def test_one_valid_move(self):
+    self.assertEqual([3], choose_move_hoarder(((0,0,0,1,0,0),0),
+                                            new_player))
+
+  def test_one_scoring_move(self):
+    self.assertEqual([0], choose_move_hoarder(((1,0,0,4,1,0),0),
+                                            ((0,0,0,0,0,1),0)))
+
+  def test_two_scoring_moves(self):
+    self.assertEqual([0], choose_move_hoarder(((1,0,0,4,1,0),0),
+                                            new_player))
+
+  def test_repeating_move(self):
+    self.assertEqual([5,4,5,3,5,0],
+                     choose_move_hoarder(((1,0,0,3,2,1),0),
+                                          ((0,0,0,0,0,1),0)))
+
 
 
 class TestRepeatMovePossible(TestCase):

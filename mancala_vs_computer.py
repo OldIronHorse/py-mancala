@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from mancala import new_player, is_game_over, to_display, move, choose_move, \
+from mancala import new_player, is_game_over, to_display, move, choose_move_max_score, \
   score
 
 if __name__ == '__main__':
@@ -16,7 +16,7 @@ if __name__ == '__main__':
       cup = int(input("Player's move:"))
       player, computer, again = move(cup - 1, player, computer)
 
-    computer_move_seq=choose_move(computer, player)
+    computer_move_seq=choose_move_max_score(computer, player)
     print("Computer's move(s):{}".format([cup+1 for cup in computer_move_seq]))
     for cup in computer_move_seq:
       print('\t(6)\t(5)\t(4)\t(3)\t(2)\t(1)')

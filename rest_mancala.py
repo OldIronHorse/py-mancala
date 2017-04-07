@@ -2,7 +2,7 @@
 
 from flask import Flask, jsonify, request
 import logging
-from mancala import new_game, move, choose_move, is_game_over
+from mancala import new_game, move, choose_move_max_score, is_game_over
 
 app=Flask(__name__)
 
@@ -44,7 +44,7 @@ def games_move(game_id):
               'game':all_games[game_id]}
   else:
     app.logger.debug("/games/%s/move: computers's turn...", game_id)
-    moves=choose_move(new_computer, new_player)
+    moves=choose_move_max_score(new_computer, new_player)
     for cup in moves:
       new_computer, new_player, again=move(cup, new_computer, new_player)
     all_games[game_id]=(new_player, new_computer)

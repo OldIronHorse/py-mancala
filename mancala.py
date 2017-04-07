@@ -83,20 +83,28 @@ def all_moves(mine, yours):
       result_moves+=[([m]+seq, home) for seq, home in all_moves(new_mine, new_yours)]
     else:
       result_cups, result_home=new_mine
-      result_moves.append(([m],result_home))
+      result_moves.append(([m],(new_mine, new_yours)))
   return result_moves
   
-
-def choose_move(mine, yours):
+def choose_move_max_score(mine, yours):
   """Return the move that maximises my_home after this turn"""
   my_cups, my_home = mine
   move_seqs=all_moves(mine, yours)
   best_home=-1
   best_move_seq=None
-  for seq, home  in move_seqs:
+  for seq, ((cups,home), yours)  in move_seqs:
     if home>best_home:
       best_move_seq=seq
       best_home=home
   #TODO tie-break for equal scores?
   return best_move_seq
 
+def choose_move_hoarder(mine, yours):
+  '''Maximise the counters in my cups and home'''
+  pass
+
+#TODO alternative move choosers
+# random
+# sniper
+# hoarder
+# turn hog
