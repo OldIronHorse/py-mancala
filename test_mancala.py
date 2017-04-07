@@ -116,11 +116,11 @@ class TestChooseMoveMaxScore(TestCase):
                                             ((0,0,0,0,0,1),0)))
 
   def test_two_scoring_moves(self):
-    self.assertEqual([0], choose_move_max_score(((1,0,0,4,1,0),0),
+    self.assertEqual([4], choose_move_max_score(((1,0,0,4,1,0),0),
                                             new_player))
 
   def test_repeating_move(self):
-    self.assertEqual([5,4,5,3,5,0],
+    self.assertEqual([5,4,5,3,5,4],
                      choose_move_max_score(((1,0,0,3,2,1),0),
                                           ((0,0,0,0,0,1),0)))
 
@@ -131,15 +131,15 @@ class TestChooseMoveHoarder(TestCase):
                                             new_player))
 
   def test_one_scoring_move(self):
-    self.assertEqual([0], choose_move_hoarder(((1,0,0,4,1,0),0),
+    self.assertEqual([4], choose_move_hoarder(((1,0,0,4,1,0),0),
                                             ((0,0,0,0,0,1),0)))
 
   def test_two_scoring_moves(self):
-    self.assertEqual([0], choose_move_hoarder(((1,0,0,4,1,0),0),
+    self.assertEqual([4], choose_move_hoarder(((1,0,0,4,1,0),0),
                                             new_player))
 
   def test_repeating_move(self):
-    self.assertEqual([5,4,5,3,5,0],
+    self.assertEqual([5,4,5,3,5,4],
                      choose_move_hoarder(((1,0,0,3,2,1),0),
                                           ((0,0,0,0,0,1),0)))
 
