@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 from mancala import new_player, move, to_display, is_game_over, \
-  choose_move_max_score, repeating_moves, all_moves, choose_move_hoarder
+  choose_move_max_score, repeating_moves, all_moves, choose_move_hoarder, \
+  choose_move_turn_hog
 from unittest import TestCase, main
 
 class TestMove(TestCase):
@@ -147,6 +148,30 @@ class TestChooseMoveHoarder(TestCase):
                      choose_move_hoarder(((1,0,0,3,2,1),0),
                                           ((0,0,0,0,0,1),0)))
 
+
+
+class TestChooseMoveTurnHog(TestCase):
+  def test_one_valid_move(self):
+    self.assertEqual([3], choose_move_turn_hog(((0,0,0,1,0,0),0),
+                                            new_player))
+
+  def test_one_scoring_move(self):
+    self.assertEqual([4], choose_move_turn_hog(((1,0,0,4,1,0),0),
+                                            ((0,0,0,0,0,1),0)))
+
+  def test_two_scoring_moves(self):
+    self.assertEqual([4], choose_move_turn_hog(((1,0,0,4,1,0),0),
+                                            new_player))
+
+  def test_repeating_move(self):
+    self.assertEqual([5,4,5,3,5,4],
+                     choose_move_turn_hog(((1,0,0,3,2,1),0),
+                                          ((0,0,0,0,0,1),0)))
+
+  def test_repeating_move2(self):
+    self.assertEqual([5,3,5,4,5,0],
+                     choose_move_turn_hog(((1,0,0,3,1,1),0),
+                                          ((0,0,0,0,0,1),0)))
 
 
 class TestRepeatMovePossible(TestCase):

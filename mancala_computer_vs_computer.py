@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 
 from mancala import new_player, is_game_over, to_display, move, \
-  choose_move_max_score, score, choose_move_hoarder, choose_move_random
+  choose_move_max_score, score, choose_move_hoarder, choose_move_random, \
+  choose_move_turn_hog
 import argparse
 
 if __name__ == '__main__':
   strategies={'max_home':choose_move_max_score,
               'random':choose_move_random,
+              'turn_hog':choose_move_turn_hog,
               'hoarder':choose_move_hoarder}
 
   parser=argparse.ArgumentParser(

@@ -114,8 +114,14 @@ def choose_move_random(mine, yours):
   '''select a random move sequence'''
   seq, state=choice(all_moves(mine, yours))
   return seq
+
+def choose_move_turn_hog(mine, yours):
+  best_move_seq=[]
+  for seq, state  in all_moves(mine, yours):
+    if len(seq)>=len(best_move_seq):
+      best_move_seq=seq
+  return best_move_seq
+  pass
+
 #TODO alternative move choosers
-# random
 # sniper
-# hoarder
-# turn hog
